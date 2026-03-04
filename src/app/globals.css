@@ -19,9 +19,9 @@ html {
   scroll-behavior: auto;
 }
 
+/* 💡 여기서 라이트/다크모드 배경 전환! */
 body {
-  background-color: #000000;
-  color: #ffffff;
+  @apply bg-[#f4f4f5] text-obsidian dark:bg-[#000000] dark:text-white transition-colors duration-700;
   font-family: var(--font-inter), system-ui, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -58,10 +58,10 @@ html.lenis { height: auto; }
 .lenis.lenis-scrolling iframe { pointer-events: none; }
 
 ::-webkit-scrollbar { width: 2px; }
-::-webkit-scrollbar-track { background: #000000; }
-::-webkit-scrollbar-thumb { background: #c9a96e; border-radius: 2px; }
+::-webkit-scrollbar-track { @apply bg-transparent dark:bg-[#000000]; }
+::-webkit-scrollbar-thumb { @apply bg-gold rounded-sm; }
 
-::selection { background-color: rgba(201, 169, 110, 0.3); color: #ffffff; }
+::selection { background-color: rgba(201, 169, 110, 0.3); @apply text-obsidian dark:text-white; }
 
 .text-gradient {
   background: linear-gradient(135deg, #c9a96e 0%, #e8c99a 50%, #c9a96e 100%);
@@ -70,16 +70,11 @@ html.lenis { height: auto; }
   background-clip: text;
 }
 
+/* 💡 글래스모피즘 효과 테마 연동 */
 .glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  @apply bg-white/40 dark:bg-white/[0.03] backdrop-blur-[20px] border border-black/5 dark:border-white/[0.06];
 }
 
 .glass-gold {
-  background: rgba(201, 169, 110, 0.05);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(201, 169, 110, 0.15);
+  @apply bg-gold/10 dark:bg-gold/5 backdrop-blur-[20px] border border-gold/20 dark:border-gold/15;
 }
