@@ -185,6 +185,7 @@ export default function Home() {
       </footer>
       <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
       <PostModal isOpen={postOpen} onClose={() => setPostOpen(false)} onSuccess={fetchPosts} defaultCategory={activeCategory !== 'All' ? activeCategory : undefined} />
+      <CryptoWidget />
     </main>
   );
 }
