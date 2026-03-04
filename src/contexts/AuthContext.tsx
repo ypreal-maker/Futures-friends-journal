@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
-const ADMIN_USERNAME = process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'admin';
+const ADMIN_USERNAME = process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'ypreal';
 
 interface AuthContextType {
   user: User | null;
@@ -43,19 +43,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (username: string, password: string) => {
-    const fakeEmail = `${username}@journal.local`;
+    // 아이디 형식 검사
+    if (!/^[a-zA-Z0-9_]{2,20}$/.test(username)) {
+      return { error: '아이디는 영문, 숫자, 밑줄(_)만 2~20자 가능합니다.' };
+    }
+
+    // 아이디 중복 체크 (profiles 테이블)
+    const { data: existing } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('username', username)
+      .maybeSingle();
+
+    if (existing) {
+      return { error: '이미 사용 중인 아이디입니다.' };
+    }
+
+    // journal.app 도메인으로 가짜 이메일 생성 (Supabase 내부용)
+    const fakeEmail = `${username.toLowerCase()}@cinematic-journal.app`;
+
     const { error } = await supabase.auth.signUp({
       email: fakeEmail,
       password,
-      options: { data: { username } }
+      options: {
+        data: { username },
+        emailRedirectTo: undefined,
+      }
     });
-    if (error) return { error: error.message };
+
+    if (error) {
+      if (error.message.includes('already registered')) {
+        return { error: '이미 사용 중인 아이디입니다.' };
+      }
+      return { error: error.message };
+    }
     return { error: null };
   };
 
   const signIn = async (username: string, password: string) => {
-    const fakeEmail = `${username}@journal.local`;
-    const { error } = await supabase.auth.signInWithPassword({ email: fakeEmail, password });
+    const fakeEmail = `${username.toLowerCase()}@cinematic-journal.app`;
+    const { error } = await supabase.auth.signInWithPassword({
+      email: fakeEmail,
+      password,
+    });
     if (error) return { error: '아이디 또는 비밀번호가 올바르지 않습니다.' };
     return { error: null };
   };
