@@ -9,6 +9,7 @@ import CategorySection from "@/components/CategorySection";
 import AuthModal from "@/components/AuthModal";
 import PostModal from "@/components/PostModal";
 import CryptoWidget from "@/components/CryptoWidget";
+import ThemeToggle from "@/components/ThemeToggle";
 import { categories, categoryDescriptions, type Category } from "@/data/photos";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase, type Post } from "@/lib/supabase";
@@ -186,6 +187,7 @@ export default function Home() {
       <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
       <PostModal isOpen={postOpen} onClose={() => setPostOpen(false)} onSuccess={fetchPosts} defaultCategory={activeCategory !== 'All' ? activeCategory : undefined} />
       <CryptoWidget />
+      <ThemeToggle />
     </main>
   );
 }
