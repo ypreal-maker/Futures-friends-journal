@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { error: '이미 사용 중인 아이디입니다.' };
     }
 
-    const fakeEmail = username.toLowerCase() + '@cinematic-journal.app';
+    const fakeEmail = username.toLowerCase() + '@admin.cinematic-journal.app';
     const { error } = await supabase.auth.signUp({
       email: fakeEmail,
       password,
@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = async (username: string, password: string) => {
-    const fakeEmail = username.toLowerCase() + '@cinematic-journal.app';
+    const fakeEmail = username.toLowerCase() + '@admin.cinematic-journal.app';
     const { error } = await supabase.auth.signInWithPassword({ email: fakeEmail, password });
     if (error) return { error: '아이디 또는 비밀번호가 올바르지 않습니다.' };
     return { error: null };
