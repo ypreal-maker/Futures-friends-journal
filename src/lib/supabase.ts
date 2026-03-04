@@ -16,3 +16,20 @@ export type Post = {
   image_url?: string;
   created_at: string;
 };
+// src/lib/supabase.ts 파일의 맨 아래에 추가
+
+export type Comment = {
+  id: string;
+  post_id: string;
+  user_id: string;
+  username: string;
+  content: string;
+  created_at: string;
+};
+
+export type Like = {
+  id: string;
+  post_id: string;
+  user_id: string;
+  created_at: string;
+};
