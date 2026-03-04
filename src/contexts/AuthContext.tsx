@@ -43,12 +43,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (username: string, password: string) => {
-    // 아이디 형식 검사
     if (!/^[a-zA-Z0-9_]{2,20}$/.test(username)) {
       return { error: '아이디는 영문, 숫자, 밑줄(_)만 2~20자 가능합니다.' };
     }
 
-    // 아이디 중복 체크 (profiles 테이블)
+    // 중복 체크
     const { data: existing } = await supabase
       .from('profiles')
       .select('username')
@@ -59,16 +58,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { error: '이미 사용 중인 아이디입니다.' };
     }
 
-    // journal.app 도메인으로 가짜 이메일 생성 (Supabase 내부용)
-    const fakeEmail = `${username.toLowerCase()}@cinematic-journal.app`;
-
+    const fakeEmail = username.toLowerCase() + '@cinematic-journal.app';
     const { error } = await supabase.auth.signUp({
       email: fakeEmail,
       password,
-      options: {
-        data: { username },
-        emailRedirectTo: undefined,
-      }
+      options: { data: { username } }
     });
 
     if (error) {
@@ -81,18 +75,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = async (username: string, password: string) => {
-    const fakeEmail = `${username.toLowerCase()}@cinematic-journal.app`;
-    const { error } = await supabase.auth.signInWithPassword({
-      email: fakeEmail,
-      password,
-    });
+    const fakeEmail = username.toLowerCase() + '@cinematic-journal.app';
+    const { error } = await supabase.auth.signInWithPassword({ email: fakeEmail, password });
     if (error) return { error: '아이디 또는 비밀번호가 올바르지 않습니다.' };
     return { error: null };
   };
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
-  };
+  const signOut = async () => { await supabase.auth.signOut(); };
 
   return (
     <AuthContext.Provider value={{ user, session, username, isAdmin, loading, signUp, signIn, signOut }}>
