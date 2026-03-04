@@ -8,6 +8,7 @@ import HeroSection from "@/components/HeroSection";
 import CategorySection from "@/components/CategorySection";
 import AuthModal from "@/components/AuthModal";
 import PostModal from "@/components/PostModal";
+import CryptoWidget from "@/components/CryptoWidget";
 import { categories, categoryDescriptions, type Category } from "@/data/photos";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase, type Post } from "@/lib/supabase";
